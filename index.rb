@@ -46,6 +46,7 @@ require 'sinatra/reloader' if development?
 
 
 get '/shutter/:id/:pose' do
+  headers 'Access-Control-Allow-Origin' => '*'
   filepath = "photos/#{params[:id]}/#{params[:id]}.#{params[:pose]}"
   puts %x(mkdir photos/#{params[:id]})
 
