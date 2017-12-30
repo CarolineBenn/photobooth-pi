@@ -64,12 +64,12 @@ get '/gallery' do
       Dir.glob("#{x}/*.gif") do |gif|
         #Each file/photo within
         # gif_filename  = File.basename(gif)
-        gif_filename  = gif
+        gif_filename  = gif.split('/')[1...999].join('/')
         pose          = gif_filename[/\.([^\.]+)\./, 1]
         photos        = Array.new 
 
         Dir.glob("public/f3_done/#{id}/#{id}.#{pose}.*.jpg") do |photo|
-          photos << photo
+          photos << photo.split('/')[1...999].join('/')
         end
 
         data << {"pose": pose, "gif": gif_filename, "photos": photos}
