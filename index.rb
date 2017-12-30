@@ -31,18 +31,19 @@ get '/shutter/:id/:pose' do
   headers 'Access-Control-Allow-Origin' => '*'
   # LIVE MODE
   #dir_path = "/home/pi/photobooth/f1_raw/#{params[:id]}/"
-  #filepath = "#{dir_path}/#{params[:id]}.#{params[:pose]}"
-  #puts %x(mkdir #{dir_path})  
-  #puts %x(raspistill -bm -md 1 -q 80 -t 1400 -tl 0 --nopreview -o #{filepath}.%02d.jpg)
-
-  # TEST MODE
-  dir_path = "./f3_done/#{params[:id]}/"
+  dir_path = "public/f1_raw/#{params[:id]}/"  
   filepath = "#{dir_path}/#{params[:id]}.#{params[:pose]}"
   puts %x(mkdir #{dir_path})  
+  puts %x(raspistill -bm -md 1 -q 80 -t 1400 -tl 0 --nopreview -o #{filepath}.%02d.jpg)
 
-  3.times do |n|  
-     puts %x(touch #{filepath}.#{n}.jpg)
-  end  
+  # TEST MODE
+  #dir_path = "./f3_done/#{params[:id]}/"
+  #filepath = "#{dir_path}/#{params[:id]}.#{params[:pose]}"
+  #puts %x(mkdir #{dir_path})  
+
+  #3.times do |n|  
+  #   puts %x(touch #{filepath}.#{n}.jpg)
+  #end  
 
   status :ok
   body ''
@@ -53,7 +54,7 @@ get '/gallery' do
   # Will return an an array of objects, one object per photoset
   photosets = Array.new 
 
-	Dir.glob("f4_gifs/*") do |x| 
+	Dir.glob("public/f4_gifs/*") do |x| 
     #Each ID/directory. This should list on the gifs dir, not photos
     if FileTest.directory?(x) 
       puts "Is a directory: #{x}" 
@@ -67,7 +68,7 @@ get '/gallery' do
         pose          = gif_filename[/\.([^\.]+)\./, 1]
         photos        = Array.new 
 
-        Dir.glob("f3_done/#{id}/#{id}.#{pose}.*.jpg") do |photo|
+        Dir.glob("public/f3_done/#{id}/#{id}.#{pose}.*.jpg") do |photo|
           photos << photo
         end
 
