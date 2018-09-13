@@ -34,7 +34,7 @@ get '/shutter/:id/:pose' do
   dir_path = "public/f1_raw/#{params[:id]}/"  
   filepath = "#{dir_path}/#{params[:id]}.#{params[:pose]}"
   puts %x(mkdir #{dir_path})  
-  puts %x(raspistill -bm -md 1 -q 80 -t 1400 -tl 0 --nopreview -o #{filepath}.%02d.jpg)
+  puts %x(raspistill -bm -md 4 -q 80 -t 1400 -tl 0 --nopreview -o #{filepath}.%02d.jpg -ISO 200 -ev 0 -awb tungsten -cfx 128,128 -mm average -ss 8000 -drc off -co 25 -sh 25  )
 
   # TEST MODE
   #dir_path = "./f3_done/#{params[:id]}/"
@@ -50,14 +50,14 @@ get '/shutter/:id/:pose' do
 end
 
 get '/gallery' do
-
+  headers 'Access-Control-Allow-Origin' => '*'
   # Will return an an array of objects, one object per photoset
   photosets = Array.new 
 
 	Dir.glob("public/f4_gifs/*") do |x| 
     #Each ID/directory. This should list on the gifs dir, not photos
     if FileTest.directory?(x) 
-      puts "Is a directory: #{x}" 
+      #puts "Is a directory: #{x}" 
       id = File.basename(x)
       data = Array.new 
 
